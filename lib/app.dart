@@ -6,9 +6,23 @@ class TaskManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),
+          fillColor: Colors.white,
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+          border: _getZeroBorder(),
+          enabledBorder: _getZeroBorder(),
+        ),
+      ),
+      home: const SplashScreen(),
     );
+  }
+
+  OutlineInputBorder _getZeroBorder() {
+    return const OutlineInputBorder(borderSide: BorderSide.none);
   }
 }
