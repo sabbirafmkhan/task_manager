@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/UI/Screens/ragister_screen.dart';
+import 'package:task_manager/UI/Screens/forgot_password_verify_email_screen.dart';
+import 'package:task_manager/UI/Screens/register_screen.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,5 +96,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _onTabForgotPasswordButton() {}
+  void _onTabForgotPasswordButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ForgotPasswordVerifyEmailScreen(),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailTEController.dispose();
+    _passwordTEController.dispose();
+    super.dispose();
+  }
 }
