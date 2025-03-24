@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/UI/Screens/login_screen.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -105,7 +106,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _onTabSubmitButton() {}
+  void _onTabSubmitButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
 
   void _onTabSignInButton() {
     Navigator.pop(context);
