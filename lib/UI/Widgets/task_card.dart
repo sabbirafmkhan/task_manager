@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  const TaskCard({super.key, required this.chipText, required this.chipColor});
+  final String chipText;
+  final Color chipColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,12 @@ class TaskCard extends StatelessWidget {
             Row(
               children: [
                 Chip(
-                  label: Text("New", style: TextStyle(color: Colors.white)),
+                  label: Text(chipText, style: TextStyle(color: Colors.white)),
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: chipColor,
                   side: BorderSide.none,
                 ),
                 Spacer(),
