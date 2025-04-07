@@ -16,7 +16,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
         itemCount: 6,
         itemBuilder: (context, index) {
           return const TaskCard(
-            chipText: "Progress",
+            chipText: "Complete",
             taskStatus: TaskStatus.completeTask,
           );
         },

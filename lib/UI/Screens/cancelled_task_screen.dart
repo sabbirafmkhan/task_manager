@@ -16,7 +16,7 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
         itemCount: 6,
         itemBuilder: (context, index) {
           return const TaskCard(
-            chipText: "Progress",
+            chipText: "Cancelled",
             taskStatus: TaskStatus.cancelledTask,
           );
         },
