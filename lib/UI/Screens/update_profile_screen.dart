@@ -101,6 +101,5 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-
   void _onTapPhotoPicker() {}
 }
