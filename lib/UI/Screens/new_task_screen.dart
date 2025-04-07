@@ -22,7 +22,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               primary: false,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return const TaskCard(chipText: "New", chipColor: Colors.blue);
+                return const TaskCard(
+                  chipText: "New",
+                  taskStatus: TaskStatus.newTask,
+                );
               },
               separatorBuilder: (context, index) => const SizedBox(height: 8),
             ),

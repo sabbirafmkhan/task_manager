@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+enum TaskStatus { newTask, progressTask, completeTask, cancelledTask }
+
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key, required this.chipText, required this.chipColor});
+  const TaskCard({super.key, required this.chipText, required this.taskStatus});
   final String chipText;
-  final Color chipColor;
+  final TaskStatus taskStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class TaskCard extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  backgroundColor: chipColor,
+                  backgroundColor: _getStatusChipColor(),
                   side: BorderSide.none,
                 ),
                 Spacer(),
@@ -45,5 +47,20 @@ class TaskCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getStatusChipColor() {
+    late Color color;
+    switch (taskStatus) {
+      case TaskStatus.newTask:
+        color = Colors.blue;
+      case TaskStatus.progressTask:
+        color = Colors.purpleAccent;
+      case TaskStatus.cancelledTask:
+        color = Colors.red;
+      case TaskStatus.completeTask:
+        color = Colors.green;
+    }
+    return color;
   }
 }
