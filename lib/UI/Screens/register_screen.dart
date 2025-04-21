@@ -43,6 +43,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 24),
+
+                  /// -- _emailTEController
                   TextFormField(
                     textInputAction: TextInputAction.next,
                     controller: _emailTEController,
@@ -56,6 +58,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
+
+                  /// -- _firstNameTEController
                   const SizedBox(height: 8),
                   TextFormField(
                     textInputAction: TextInputAction.next,
@@ -68,6 +72,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
+
+                  /// -- _lastNameTEController
                   const SizedBox(height: 8),
                   TextFormField(
                     textInputAction: TextInputAction.next,
@@ -80,6 +86,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
+
+                  /// -- _mobileTEController
                   const SizedBox(height: 8),
                   TextFormField(
                     textInputAction: TextInputAction.next,
@@ -95,6 +103,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
+
+                  /// -- _passwordTEController
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _passwordTEController,
@@ -107,6 +117,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
+
+                  /// -- _onTapSubmitButton
                   const SizedBox(height: 16),
                   Visibility(
                     visible: _registrationInProgress == false,
