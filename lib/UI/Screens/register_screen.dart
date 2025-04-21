@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/UI/Widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 import 'package:task_manager/UI/Widgets/snack_bar_message.dart';
 import 'package:task_manager/data/service/network_client.dart';
@@ -98,6 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _passwordTEController,
                     decoration: InputDecoration(hintText: "Password"),
+                    obscureText: true,
                     validator: (String? value) {
                       if ((value?.isEmpty ?? true) || (value!.length < 6)) {
                         return 'Enter your password more than 6 letters';
@@ -108,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 16),
                   Visibility(
                     visible: _registrationInProgress == false,
-                    replacement: Center(child: CircularProgressIndicator()),
+                    replacement: CenteredCircularProgressIndicator(),
                     child: ElevatedButton(
                       onPressed: _onTapSubmitButton,
                       child: Icon(Icons.arrow_circle_right_outlined),
@@ -171,10 +173,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _registrationInProgress = false;
     setState(() {});
     if (response.isSuccess) {
+      _clearTextFields();
       showSnackBarMessage(context, 'User registered successfully!');
     } else {
       showSnackBarMessage(context, response.errorMessage);
     }
+  }
+
+  void _clearTextFields() {
+    _emailTEController.clear();
+    _firstNameTEController.clear();
+    _lastNameTEController.clear();
+    _mobileTEController.clear();
+    _passwordTEController.clear();
   }
 
   void _onTabSignInButton() {
