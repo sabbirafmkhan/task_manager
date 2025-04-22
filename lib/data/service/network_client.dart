@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
+import 'package:task_manager/UI/Screens/login_screen.dart';
+import 'package:task_manager/UI/controllers/auth_controller.dart';
+import 'package:task_manager/app.dart';
 
 class NetworkResponse {
   final bool isSuccess;
@@ -21,8 +25,9 @@ class NetworkClient {
   static Future<NetworkResponse> getRequest({required String url}) async {
     try {
       Uri uri = Uri.parse(url);
-      _preRequestLog(url);
-      Response response = await get(uri);
+      Map<String, String> headers = {'token': AuthController.token ?? ''};
+      _preRequestLog(url, headers);
+      Response response = await get(uri, headers: headers);
       _postRequestLog(
         url,
         response.statusCode,
@@ -35,6 +40,13 @@ class NetworkClient {
           isSuccess: true,
           statusCode: response.statusCode,
           data: decodedJson,
+        );
+      } else if (response.statusCode == 401) {
+        _moveToLoginScreen();
+        return NetworkResponse(
+          isSuccess: false,
+          statusCode: response.statusCode,
+          errorMessage: 'Un-authorize user. Please login again.',
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -61,10 +73,14 @@ class NetworkClient {
   }) async {
     try {
       Uri uri = Uri.parse(url);
-      _preRequestLog(url, body: body);
+      Map<String, String> headers = {
+        'Content-type': 'Application/json',
+        'token': AuthController.token ?? '',
+      };
+      _preRequestLog(url, headers, body: body);
       Response response = await post(
         uri,
-        headers: {'Content-type': 'Application/json'},
+        headers: headers,
         body: jsonEncode(body),
       );
       _postRequestLog(
@@ -79,6 +95,13 @@ class NetworkClient {
           isSuccess: true,
           statusCode: response.statusCode,
           data: decodedJson,
+        );
+      } else if (response.statusCode == 401) {
+        _moveToLoginScreen();
+        return NetworkResponse(
+          isSuccess: false,
+          statusCode: response.statusCode,
+          errorMessage: 'Un-authorize user. Please login again.',
         );
       } else {
         final decodedJson = jsonDecode(response.body);
@@ -99,9 +122,13 @@ class NetworkClient {
     }
   }
 
-  static void _preRequestLog(String url, {Map<String, dynamic>? body}) {
+  static void _preRequestLog(
+    String url,
+    Map<String, String> headers, {
+    Map<String, dynamic>? body,
+  }) {
     _logger.i(
-      'URL => $url\n'
+      'URL => $url\nHeaders: $headers\n'
       'Body: $body',
     );
   }
@@ -129,5 +156,14 @@ class NetworkClient {
         'Response: $responseBody',
       );
     }
+  }
+
+  static Future<void> _moveToLoginScreen() async {
+    await AuthController.clearUserData();
+    Navigator.pushAndRemoveUntil(
+      TaskManager.navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (predicate) => false,
+    );
   }
 }
