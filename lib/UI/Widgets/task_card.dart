@@ -1,46 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/task_model.dart';
 
-enum TaskStatus { newTask, progressTask, completeTask, cancelledTask }
+enum TaskStatus { sNew, progress, completed, cancelled }
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key, required this.chipText, required this.taskStatus});
-  final String chipText;
+  const TaskCard({
+    super.key,
+    required this.taskStatus,
+    required this.taskModel,
+  });
+
   final TaskStatus taskStatus;
+  final TaskModel taskModel;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
       color: Colors.white,
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "title",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              taskModel.title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
-            Text("description"),
-            Text("date: 3/25/25"),
+            Text(taskModel.description),
+            // TODO: Format it with DateFormatter (intl)
+            Text('Date: ${taskModel.createdDate}'),
             Row(
               children: [
                 Chip(
-                  label: Text(chipText, style: TextStyle(color: Colors.white)),
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  label: Text(
+                    taskModel.status,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
                   backgroundColor: _getStatusChipColor(),
                   side: BorderSide.none,
                 ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {},
-                  child: Icon(Icons.delete, color: Colors.red),
-                ),
-                TextButton(onPressed: () {}, child: Icon(Icons.edit)),
+                const Spacer(),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
               ],
             ),
           ],
@@ -52,14 +59,14 @@ class TaskCard extends StatelessWidget {
   Color _getStatusChipColor() {
     late Color color;
     switch (taskStatus) {
-      case TaskStatus.newTask:
+      case TaskStatus.sNew:
         color = Colors.blue;
-      case TaskStatus.progressTask:
-        color = Colors.purpleAccent;
-      case TaskStatus.cancelledTask:
-        color = Colors.red;
-      case TaskStatus.completeTask:
+      case TaskStatus.progress:
+        color = Colors.purple;
+      case TaskStatus.completed:
         color = Colors.green;
+      case TaskStatus.cancelled:
+        color = Colors.red;
     }
     return color;
   }
