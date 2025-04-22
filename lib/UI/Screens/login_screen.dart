@@ -7,6 +7,8 @@ import 'package:task_manager/UI/Screens/register_screen.dart';
 import 'package:task_manager/UI/Widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 import 'package:task_manager/UI/Widgets/snack_bar_message.dart';
+import 'package:task_manager/UI/controllers/auth_controller.dart';
+import 'package:task_manager/data/models/login_model.dart';
 import 'package:task_manager/data/service/network_client.dart';
 import 'package:task_manager/data/utils/urls.dart';
 
@@ -142,6 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
     _loginInProgress = false;
     setState(() {});
     if (response.isSuccess) {
+      LoginModel loginModel = LoginModel.fromJson(response.data!);
+      AuthController.saveUserInformation(
+        loginModel.token,
+        loginModel.userModel,
+      );
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const MainBottomNavScreen()),
