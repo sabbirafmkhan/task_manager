@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/UI/Widgets/centered_circular_progress_indicator.dart';
+import 'package:task_manager/UI/Widgets/snack_bar_message.dart';
 import 'package:task_manager/UI/Widgets/task_card.dart';
+import 'package:task_manager/data/models/task_list_model.dart';
+import 'package:task_manager/data/models/task_model.dart';
+import 'package:task_manager/data/service/network_client.dart';
+import 'package:task_manager/data/utils/urls.dart';
 
 class ProgressTaskScreen extends StatefulWidget {
   const ProgressTaskScreen({super.key});
@@ -9,18 +15,48 @@ class ProgressTaskScreen extends StatefulWidget {
 }
 
 class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
+  bool _getProgressTasksInProgress = false;
+  List<TaskModel> _progressTaskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllProgressTaskList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.separated(
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          // return  TaskCard(
-          //   taskStatus: TaskStatus.progress,
-          // );
-        },
-        separatorBuilder: (context, index) => const SizedBox(height: 8),
+      body: Visibility(
+        visible: _getProgressTasksInProgress == false,
+        replacement: CenteredCircularProgressIndicator(),
+        child: ListView.separated(
+          itemCount: _progressTaskList.length,
+          itemBuilder: (context, index) {
+            return TaskCard(
+              taskStatus: TaskStatus.progress,
+              taskModel: _progressTaskList[index],
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+        ),
       ),
     );
+  }
+
+  Future<void> _getAllProgressTaskList() async {
+    _getProgressTasksInProgress == true;
+    setState(() {});
+    final NetworkResponse response = await NetworkClient.getRequest(
+      url: Urls.progressTaskListUrl,
+    );
+    if (response.isSuccess) {
+      TaskListModel taskListModel = TaskListModel.fromJson(response.data ?? {});
+      _progressTaskList = taskListModel.taskList;
+    } else {
+      showSnackBarMessage(context, response.errorMessage, true);
+    }
+    _getProgressTasksInProgress == false;
+    setState(() {});
   }
 }
