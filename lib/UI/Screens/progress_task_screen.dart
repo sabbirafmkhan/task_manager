@@ -36,6 +36,7 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
             return TaskCard(
               taskStatus: TaskStatus.progress,
               taskModel: _progressTaskList[index],
+              refreshList: _getAllProgressTaskList,
             );
           },
           separatorBuilder: (context, index) => const SizedBox(height: 8),
@@ -45,7 +46,7 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
   }
 
   Future<void> _getAllProgressTaskList() async {
-    _getProgressTasksInProgress == true;
+    _getProgressTasksInProgress = true;
     setState(() {});
     final NetworkResponse response = await NetworkClient.getRequest(
       url: Urls.progressTaskListUrl,
@@ -56,7 +57,8 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
     } else {
       showSnackBarMessage(context, response.errorMessage, true);
     }
-    _getProgressTasksInProgress == false;
+
+    _getProgressTasksInProgress = false;
     setState(() {});
   }
 }

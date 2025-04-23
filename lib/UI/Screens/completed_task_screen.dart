@@ -36,6 +36,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
             return TaskCard(
               taskStatus: TaskStatus.completed,
               taskModel: _completedTaskList[index],
+              refreshList: _getAllCompletedTaskList,
             );
           },
           separatorBuilder: (context, index) => const SizedBox(height: 8),
@@ -45,7 +46,7 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   }
 
   Future<void> _getAllCompletedTaskList() async {
-    _getCompletedTasksInProgress == true;
+    _getCompletedTasksInProgress = true;
     setState(() {});
     final NetworkResponse response = await NetworkClient.getRequest(
       url: Urls.completedTaskListUrl,
@@ -56,7 +57,8 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     } else {
       showSnackBarMessage(context, response.errorMessage, true);
     }
-    _getCompletedTasksInProgress == false;
+
+    _getCompletedTasksInProgress = false;
     setState(() {});
   }
 }
