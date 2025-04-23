@@ -66,7 +66,7 @@ class _TaskCardState extends State<TaskCard> {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: _deleteTask,
                         icon: const Icon(Icons.delete),
                       ),
                       IconButton(
@@ -162,6 +162,21 @@ class _TaskCardState extends State<TaskCard> {
     setState(() {});
     final NetworkResponse response = await NetworkClient.getRequest(
       url: Urls.updateTaskStatusUrl(widget.taskModel.id, status),
+    );
+    _inProgress = false;
+    if (response.isSuccess) {
+      widget.refreshList();
+    } else {
+      setState(() {});
+      showSnackBarMessage(context, response.errorMessage, true);
+    }
+  }
+
+  Future<void> _deleteTask() async {
+    _inProgress = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkClient.getRequest(
+      url: Urls.deleteTaskUrl(widget.taskModel.id),
     );
     _inProgress = false;
     if (response.isSuccess) {
