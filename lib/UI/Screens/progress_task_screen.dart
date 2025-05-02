@@ -29,7 +29,7 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
       body: GetBuilder<ProgressTaskController>(
         builder: (controller) {
           return Visibility(
-            visible: controller.getNewTasksInProgress == false,
+            visible: controller.getProgressTasksInProgress == false,
             replacement: CenteredCircularProgressIndicator(),
             child: ListView.separated(
               itemCount: controller.progressTaskList.length,
