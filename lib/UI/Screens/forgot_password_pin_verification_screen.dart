@@ -6,7 +6,7 @@ import 'package:task_manager/UI/Screens/reset_password_screen.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 
 class ForgotPasswordPinVerificationScreen extends StatefulWidget {
-  const ForgotPasswordPinVerificationScreen({super.key});
+  const ForgotPasswordPinVerificationScreen({super.key, required String email});
 
   @override
   State<ForgotPasswordPinVerificationScreen> createState() =>

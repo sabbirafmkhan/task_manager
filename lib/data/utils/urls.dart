@@ -13,8 +13,13 @@ class Urls {
       '$_baseUrl/listTaskByStatus/Completed';
   static const String cancelledTaskListUrl =
       '$_baseUrl/listTaskByStatus/Cancelled';
-
   static String updateTaskStatusUrl(String taskId, String status) =>
       '$_baseUrl/updateTaskStatus/$taskId/$status';
   static String deleteTaskUrl(String taskId) => '$_baseUrl/deleteTask/$taskId';
+  static String recoverVerifyEmailUrl(String email) =>
+      '$_baseUrl/RecoverVerifyEmail/$email';
+  static String recoverVerifyOTPUrl(String email, String otp) =>
+      '$_baseUrl/RecoverVerifyOtp/$email/$otp';
+  static const String recoverResetPasswordUrl =
+      '$_baseUrl/RecoverResetPassword';
 }
