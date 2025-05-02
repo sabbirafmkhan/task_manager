@@ -7,10 +7,8 @@ import 'package:task_manager/UI/Screens/register_screen.dart';
 import 'package:task_manager/UI/Widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/UI/Widgets/screen_background.dart';
 import 'package:task_manager/UI/Widgets/snack_bar_message.dart';
-import 'package:task_manager/UI/controllers/auth_controller.dart';
-import 'package:task_manager/data/models/login_model.dart';
-import 'package:task_manager/data/service/network_client.dart';
-import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/UI/controllers/login_controller.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _loginInProgress = false;
+  final LoginController _loginController = Get.find<LoginController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,13 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 /// -- _onTapSingInButton:
                 const SizedBox(height: 16),
-                Visibility(
-                  visible: _loginInProgress == false,
-                  replacement: CenteredCircularProgressIndicator(),
-                  child: ElevatedButton(
-                    onPressed: _onTapSingInButton,
-                    child: Icon(Icons.arrow_circle_right_outlined),
-                  ),
+                GetBuilder<LoginController>(
+                  builder: (controller) {
+                    return Visibility(
+                      visible: controller.loginInprogress == false,
+                      replacement: CenteredCircularProgressIndicator(),
+                      child: ElevatedButton(
+                        onPressed: _onTapSingInButton,
+                        child: Icon(Icons.arrow_circle_right_outlined),
+                      ),
+                    );
+                  },
                 ),
 
                 /// -- _onTapSignUpButton:
@@ -131,31 +134,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    _loginInProgress = true;
-    setState(() {});
-    Map<String, dynamic> requestBody = {
-      "email": _emailTEController.text.trim(),
-      "password": _passwordTEController.text,
-    };
-    NetworkResponse response = await NetworkClient.postRequest(
-      url: Urls.loginUrl,
-      body: requestBody,
+    final bool isSuccess = await _loginController.login(
+      _emailTEController.text.trim(),
+      _passwordTEController.text,
     );
-    _loginInProgress = false;
-    setState(() {});
-    if (response.isSuccess) {
-      LoginModel loginModel = LoginModel.fromJson(response.data!);
-      AuthController.saveUserInformation(
-        loginModel.token,
-        loginModel.userModel,
-      );
+    if (isSuccess) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const MainBottomNavScreen()),
         (predicate) => false,
       );
     } else {
-      showSnackBarMessage(context, response.errorMessage);
+      showSnackBarMessage(context, _loginController.errorMassage!, true);
     }
   }
 
