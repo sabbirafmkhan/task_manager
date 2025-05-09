@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124214010995",
+    "project_id": "ostadflutterbatch9",
+    "storage_bucket": "ostadflutterbatch9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124214010995:android:0aff3d1364ea1d83c1f606",
+        "android_client_info": {
+          "package_name": "com.example.task_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Ark_0dgviTzqGi4aPTrubvvL5b0TM7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
